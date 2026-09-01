@@ -1,7 +1,11 @@
 import { getImage, escapeHtml } from "../utils/helpers.js";
 
 function detail(label, value) {
-    if (value === undefined || value === null || value === "") {
+    if (
+        value === undefined ||
+        value === null ||
+        value === ""
+    ) {
         return "";
     }
 
@@ -20,6 +24,10 @@ function detail(label, value) {
 
 export function renderCardModal(card) {
     const image = getImage(card);
+
+    const cardJson = escapeHtml(
+        JSON.stringify(card, null, 2)
+    );
 
     return `
         <div
@@ -65,6 +73,18 @@ export function renderCardModal(card) {
                         ${detail("Cost", card?.cost)}
                         ${detail("Level", card?.level)}
                     </div>
+
+                    <details class="mt-6 border-t border-slate-800 pt-4">
+                        <summary
+                            class="cursor-pointer select-none text-sm font-semibold text-slate-300 hover:text-white"
+                        >
+                            Ver JSON completo
+                        </summary>
+
+                        <pre
+                            class="mt-4 max-h-96 overflow-auto rounded-xl bg-black p-4 text-xs leading-relaxed text-slate-300"
+                        ><code>${cardJson}</code></pre>
+                    </details>
                 </div>
             </div>
         </div>

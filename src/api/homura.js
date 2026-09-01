@@ -1,15 +1,15 @@
 function buildUrl(path) {
     // Desenvolvimento local:
-    // usa o proxy configurado no vite.config.js
+    // vite.config.js encaminha /homura-api para a Homura
     if (import.meta.env.DEV) {
         return `/homura-api${path}`;
     }
 
-    // Produção na Vercel:
-    // usa nossa Function /api/proxy
-    return `/api/proxy?path=${encodeURIComponent(
-        path.replace(/^\//, "")
-    )}`;
+    // Produção:
+    // passa pela Vercel Function para proteger o token
+    const cleanPath = path.replace(/^\/+/, "");
+
+    return `/api/homura?path=${encodeURIComponent(cleanPath)}`;
 }
 
 
@@ -42,83 +42,64 @@ async function request(path, options = {}) {
 }
 
 
-export async function getApiInfo() {
+export function getApiInfo() {
     return request("/");
 }
 
 
-export async function getCards(
-    game,
-    params = {}
-) {
-    const searchParams =
-        new URLSearchParams();
+export function getCards(game, params = {}) {
+    const searchParams = new URLSearchParams();
 
-    Object.entries(params).forEach(
-        ([key, value]) => {
-            if (
-                value !== undefined &&
-                value !== null &&
-                value !== ""
-            ) {
-                searchParams.set(
-                    key,
-                    String(value)
-                );
-            }
+    Object.entries(params).forEach(([key, value]) => {
+        if (
+            value !== undefined &&
+            value !== null &&
+            value !== ""
+        ) {
+            searchParams.set(
+                key,
+                String(value)
+            );
         }
-    );
+    });
 
-    const query =
-        searchParams.toString();
+    const query = searchParams.toString();
 
     return request(
-        `/api/${game}/cards${
-            query ? `?${query}` : ""
-        }`
+        `/api/${game}/cards${query ? `?${query}` : ""}`
     );
 }
 
 
-export async function getCardById(
-    game,
-    cardId
-) {
+export function getCardById(game, cardId) {
     return request(
         `/api/${game}/cards/${encodeURIComponent(cardId)}`
     );
 }
 
 
-export async function lookupCard(
-    game,
-    query
-) {
+export function lookupCard(game, query) {
     return request(
         `/api/${game}/cards/lookup?q=${encodeURIComponent(query)}`
     );
 }
 
 
-export async function getRandomCard(game) {
+export function getRandomCard(game) {
     return request(
         `/api/${game}/cards/random`
     );
 }
 
 
-export async function getCardsBulk(
-    game,
-    ids
-) {
+export function getCardsBulk(game, ids) {
     return request(
         `/api/${game}/cards/bulk`,
         {
             method: "POST",
 
             headers: {
-                "Content-Type":
-                    "application/json",
+                "Content-Type": "application/json",
             },
 
             body: JSON.stringify({
