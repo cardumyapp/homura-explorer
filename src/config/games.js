@@ -153,6 +153,15 @@ export const games = [
             "language",
         ],
     },
+    {
+        id: "altered",
+        name: "Altered",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
 ];
 
 export function getGame(gameId) {
