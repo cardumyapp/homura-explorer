@@ -229,7 +229,7 @@ function render() {
 
                 </div>
 
-                ${renderGameSelector(gameId)}            
+                ${renderGameSelector(selectedGame)}            
                 <!-- Filtros -->
 
                 <div id="filtersArea">
