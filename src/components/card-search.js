@@ -70,10 +70,6 @@ export function renderCardSearch(gameId, filters = {}) {
                     <h3 class="font-bold">
                         Busca e filtros
                     </h3>
-
-                    <p class="mt-1 text-xs text-slate-500">
-                        ${game.name}
-                    </p>
                 </div>
 
                 <div class="flex items-center gap-3">

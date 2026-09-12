@@ -635,6 +635,77 @@ function bindDynamicEvents() {
 }
 
 
+async function changeGame(newGame) {
+
+    if (newGame === selectedGame) {
+        return;
+    }
+
+    selectedGame = newGame;
+
+    /*
+     * Reseta estado.
+     */
+    page = 1;
+    filters = {};
+    sort = "";
+    order = "asc";
+
+    /*
+     * Atualiza visualmente a sidebar.
+     */
+    updateSidebar();
+
+    /*
+     * Atualiza título.
+     */
+    const game = getGame(selectedGame);
+
+    const title = document.querySelector("#gameTitle");
+
+    if (title) {
+        title.textContent =
+            game?.name ||
+            selectedGame;
+    }
+
+    /*
+     * Atualiza os filtros.
+     */
+    const filtersArea =
+        document.querySelector("#filtersArea");
+
+    if (filtersArea) {
+        filtersArea.innerHTML =
+            renderCardSearch(
+                selectedGame,
+                {}
+            );
+    }
+
+    /*
+     * Como recriamos os filtros,
+     * registra novamente os eventos.
+     */
+    bindFilterEvents();
+
+    /*
+     * Atualiza o seletor mobile.
+     */
+    const mobileGameSelect =
+        document.querySelector("#mobileGameSelect");
+
+    if (mobileGameSelect) {
+        mobileGameSelect.value = selectedGame;
+    }
+
+    /*
+     * Apenas o grid fica em loading.
+     */
+    await loadCards();
+}
+
+
 /*
 |--------------------------------------------------------------------------
 | Troca de jogo
@@ -643,120 +714,52 @@ function bindDynamicEvents() {
 
 function bindGameEvents() {
 
+    /*
+     * Sidebar desktop
+     */
     document
-        .querySelectorAll(
-            "[data-game]"
-        )
+        .querySelectorAll("[data-game]")
         .forEach((button) => {
 
             button.addEventListener(
                 "click",
                 async () => {
 
-                    const newGame =
-                        button.dataset.game;
-
-
-                    if (
-                        newGame ===
-                        selectedGame
-                    ) {
-                        return;
-                    }
-
-
-                    selectedGame =
-                        newGame;
-
-
-                    /*
-                     * Reseta estado.
-                     */
-
-                    page = 1;
-
-                    filters = {};
-
-                    sort = "";
-
-                    order = "asc";
-
-
-                    /*
-                     * Atualiza visualmente
-                     * a sidebar imediatamente.
-                     */
-
-                    updateSidebar();
-
-
-                    /*
-                     * Atualiza título imediatamente.
-                     */
-
-                    const game =
-                        getGame(
-                            selectedGame
-                        );
-
-
-                    const title =
-                        document.querySelector(
-                            "#gameTitle"
-                        );
-
-
-                    if (title) {
-
-                        title.textContent =
-                            game?.name ||
-                            selectedGame;
-
-                    }
-
-
-                    /*
-                     * Atualiza os filtros
-                     * imediatamente.
-                     */
-
-                    const filtersArea =
-                        document.querySelector(
-                            "#filtersArea"
-                        );
-
-
-                    if (filtersArea) {
-
-                        filtersArea.innerHTML =
-                            renderCardSearch(
-                                selectedGame,
-                                {}
-                            );
-
-                    }
-
-
-                    /*
-                     * Como recriamos filtros,
-                     * registra evento do formulário.
-                     */
-
-                    bindFilterEvents();
-
-
-                    /*
-                     * Apenas o grid fica em loading.
-                     */
-
-                    await loadCards();
+                    await changeGame(
+                        button.dataset.game
+                    );
 
                 }
             );
 
         });
 
+
+    /*
+     * Seletor mobile
+     */
+    const mobileGameSelect =
+        document.querySelector(
+            "#mobileGameSelect"
+        );
+
+    if (mobileGameSelect) {
+
+        mobileGameSelect.addEventListener(
+            "change",
+            async () => {
+
+                await changeGame(
+                    mobileGameSelect.value
+                );
+
+            }
+        );
+
+    }
+
 }
+
 
 
 /*
