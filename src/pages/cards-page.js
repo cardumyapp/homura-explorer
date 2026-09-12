@@ -1011,21 +1011,17 @@ function bindPaginationEvents() {
 */
 
 function openModal(card) {
-
     const root =
         document.querySelector(
             "#modalRoot"
         );
 
-
     if (!root) {
         return;
     }
 
-
     root.innerHTML =
         renderCardModal(card);
-
 
     document
         .querySelector(
@@ -1036,25 +1032,62 @@ function openModal(card) {
             closeModal
         );
 
+    document
+        .querySelector(
+            "#viewRawJson"
+        )
+        ?.addEventListener(
+            "click",
+            () => {
+                const json =
+                    JSON.stringify(
+                        card,
+                        null,
+                        2
+                    );
+
+                const blob =
+                    new Blob(
+                        [json],
+                        {
+                            type: "application/json",
+                        }
+                    );
+
+                const url =
+                    URL.createObjectURL(
+                        blob
+                    );
+
+                window.open(
+                    url,
+                    "_blank"
+                );
+
+                setTimeout(
+                    () => {
+                        URL.revokeObjectURL(
+                            url
+                        );
+                    },
+                    60000
+                );
+            }
+        );
 
     document
         .querySelector("#modal")
         ?.addEventListener(
             "click",
             (event) => {
-
                 if (
                     event.target.id ===
                     "modal"
                 ) {
-
                     closeModal();
-
                 }
-
             }
         );
-
 }
 
 
