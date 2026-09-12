@@ -11,6 +11,10 @@ import {
 } from "../components/game-sidebar.js";
 
 import {
+    renderGameSelector,
+} from "../components/game-selector.js";
+
+import {
     renderCardGrid,
 } from "../components/card-grid.js";
 
@@ -225,7 +229,7 @@ function render() {
 
                 </div>
 
-
+                ${renderGameSelector(gameId)}            
                 <!-- Filtros -->
 
                 <div id="filtersArea">
