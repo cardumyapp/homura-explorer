@@ -162,6 +162,33 @@ export const games = [
             "set",
         ],
     },
+    {
+        id: "godzilla",
+        name: "Godzilla",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
+        id: "cyberpunk",
+        name: "Cyberpunk",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
+        id: "hololive",
+        name: "Hololive",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
 ];
 
 export function getGame(gameId) {
