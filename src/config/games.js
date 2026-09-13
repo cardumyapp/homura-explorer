@@ -140,20 +140,6 @@ export const games = [
         ],
     },
     {
-        id: "magic",
-        name: "Magic: The Gathering",
-        filters: [
-            "id",
-            "name",
-            "set",
-            "colors",
-            "rarity",
-            "layout",
-            "cmc",
-            "language",
-        ],
-    },
-    {
         id: "altered",
         name: "Altered",
         filters: [
@@ -183,6 +169,33 @@ export const games = [
     {
         id: "hololive",
         name: "Hololive",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+        {
+        id: "cardfight-vanguard",
+        name: "Vanguard",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+        {
+        id: "grand-archive",
+        name: "Grand Archive",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+        {
+        id: "universus",
+        name: "Universus",
         filters: [
             "id",
             "name",
