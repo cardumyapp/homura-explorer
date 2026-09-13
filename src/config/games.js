@@ -1,5 +1,32 @@
 export const games = [
     {
+        id: "altered",
+        name: "Altered",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
+        id: "cardfight-vanguard",
+        name: "Cardfight Vanguard",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
+        id: "cyberpunk",
+        name: "Cyberpunk",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
         id: "digimon",
         name: "Digimon",
         filters: [
@@ -37,6 +64,33 @@ export const games = [
         ],
     },
     {
+        id: "grand-archive",
+        name: "Grand Archive",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
+        id: "hololive",
+        name: "Hololive",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
+        id: "godzilla",
+        name: "Godzilla",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
         id: "gundam",
         name: "Gundam",
         filters: [
@@ -44,6 +98,15 @@ export const games = [
             "code",
             "name",
             "rarity",
+        ],
+    },
+    {
+        id: "lorcana",
+        name: "Disney Lorcana",
+        filters: [
+            "id",
+            "name",
+            "set",
         ],
     },
     {
@@ -125,6 +188,15 @@ export const games = [
         ],
     },
     {
+        id: "universus",
+        name: "UniVersus",
+        filters: [
+            "id",
+            "name",
+            "set",
+        ],
+    },
+    {
         id: "yugioh",
         name: "Yu-Gi-Oh!",
         filters: [
@@ -138,70 +210,7 @@ export const games = [
             "set",
             "rarity",
         ],
-    },
-    {
-        id: "altered",
-        name: "Altered",
-        filters: [
-            "id",
-            "name",
-            "set",
-        ],
-    },
-    {
-        id: "godzilla",
-        name: "Godzilla",
-        filters: [
-            "id",
-            "name",
-            "set",
-        ],
-    },
-    {
-        id: "cyberpunk",
-        name: "Cyberpunk",
-        filters: [
-            "id",
-            "name",
-            "set",
-        ],
-    },
-    {
-        id: "hololive",
-        name: "Hololive",
-        filters: [
-            "id",
-            "name",
-            "set",
-        ],
-    },
-        {
-        id: "cardfight-vanguard",
-        name: "Vanguard",
-        filters: [
-            "id",
-            "name",
-            "set",
-        ],
-    },
-        {
-        id: "grand-archive",
-        name: "Grand Archive",
-        filters: [
-            "id",
-            "name",
-            "set",
-        ],
-    },
-        {
-        id: "universus",
-        name: "Universus",
-        filters: [
-            "id",
-            "name",
-            "set",
-        ],
-    },
+    }
 ];
 
 export function getGame(gameId) {
