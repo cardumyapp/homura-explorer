@@ -27,7 +27,9 @@ import {
 } from "../components/card-search.js";
 
 
-let selectedGame = "one-piece";
+let selectedGame =
+    localStorage.getItem("homura-selected-game")
+    || "one-piece";
 
 let cards = [];
 
@@ -642,7 +644,10 @@ async function changeGame(newGame) {
     }
 
     selectedGame = newGame;
-
+    localStorage.setItem(
+        "homura-selected-game",
+        selectedGame
+    );
     /*
      * Reseta estado.
      */
