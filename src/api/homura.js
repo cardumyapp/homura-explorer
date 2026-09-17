@@ -91,6 +91,11 @@ export function getRandomCard(game) {
     );
 }
 
+export function getRandomCardV2(game) {
+    return request(
+        `/api/${game}/cards/random/v2`
+    );
+}
 
 export function getCardsBulk(game, ids) {
     return request(

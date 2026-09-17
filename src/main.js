@@ -8,11 +8,19 @@ import {
     renderApiTesterPage,
 } from "./pages/api-tester-page.js";
 
+import {
+    renderRandomV2Page,
+} from "./pages/random-v2-page.js";
+
 const path =
     window.location.pathname;
 
 if (path === "/api-tester") {
     renderApiTesterPage();
+
+} else if (path === "/random-v2") {
+    renderRandomV2Page();
+
 } else {
     renderCardsPage();
 }

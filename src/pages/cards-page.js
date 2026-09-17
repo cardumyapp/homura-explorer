@@ -1,152 +1,99 @@
 import {
     getCards,
 } from "../api/homura.js";
-
 import {
     getGame,
 } from "../config/games.js";
-
 import {
     renderGameSidebar,
 } from "../components/game-sidebar.js";
-
 import {
     renderGameSelector,
 } from "../components/game-selector.js";
-
 import {
     renderCardGrid,
 } from "../components/card-grid.js";
-
 import {
     renderCardModal,
 } from "../components/card-modal.js";
-
 import {
     renderCardSearch,
 } from "../components/card-search.js";
-
-
 let selectedGame =
     localStorage.getItem("homura-selected-game")
     || "one-piece";
-
 let cards = [];
-
 let page = 1;
-
 let total = 0;
-
 let totalPages = 1;
-
 let filters = {};
-
 let sort = "";
-
 let order = "asc";
-
 let initialized = false;
-
-
 /*
 |--------------------------------------------------------------------------
 | Inicialização da página
 |--------------------------------------------------------------------------
 */
-
 export async function renderCardsPage() {
-
     // Primeiro cria a estrutura da página.
     render();
-
     initialized = true;
-
     // Depois busca as cartas.
     await loadCards();
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Consulta API
 |--------------------------------------------------------------------------
 */
-
 async function loadCards() {
-
     showGridLoading();
-
     try {
-
         const result = await getCards(
             selectedGame,
             {
                 ...filters,
-
                 page,
-
                 limit: 30,
-
                 sort:
                     sort || undefined,
-
                 order,
             }
         );
-
-
         cards =
             Array.isArray(result?.data)
                 ? result.data
                 : [];
-
-
         total =
             Number(
                 result?.total ??
                 cards.length
             );
-
-
         totalPages =
             Number(
                 result?.totalPages ??
                 1
             );
-
-
         updatePageContent();
-
     } catch (error) {
-
         console.error(
             "Erro ao carregar cartas:",
             error
         );
-
         showGridError(error);
-
     }
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Render principal
 |--------------------------------------------------------------------------
 */
-
 function render() {
-
     const game =
         getGame(selectedGame);
-
-
     document.querySelector("#app")
         .innerHTML = `
-
         <div
             class="
                 flex
@@ -155,12 +102,9 @@ function render() {
                 text-white
             "
         >
-
             ${renderGameSidebar(
                 selectedGame
             )}
-
-
             <main
                 class="
                     min-w-0
@@ -169,9 +113,7 @@ function render() {
                     md:p-5
                 "
             >
-
                 <!-- Cabeçalho -->
-
                 <div
                     class="
                         mb-4
@@ -180,9 +122,7 @@ function render() {
                         justify-between
                     "
                 >
-
                     <div>
-
                         <h2
                             id="gameTitle"
                             class="
@@ -195,8 +135,6 @@ function render() {
                                 selectedGame
                             }
                         </h2>
-
-
                         <p
                             id="gameTotal"
                             class="
@@ -207,45 +145,56 @@ function render() {
                         >
                             Carregando...
                         </p>
-
                     </div>
+                    <div class="flex gap-2">
 
+    <a
+        href="/random-v2"
+        class="
+            rounded-lg
+            border
+            border-slate-700
+            px-3
+            py-2
+            text-xs
+            font-bold
+            text-slate-300
+            hover:border-indigo-500
+            hover:text-white
+        "
+    >
+        Random V2
+    </a>
 
-                    <a
-                        href="/api-tester"
-                        class="
-                            rounded-lg
-                            border
-                            border-slate-700
-                            px-3
-                            py-2
-                            text-xs
-                            font-bold
-                            text-slate-300
-                            hover:border-indigo-500
-                            hover:text-white
-                        "
-                    >
-                        API Tester
-                    </a>
+    <a
+        href="/api-tester"
+        class="
+            rounded-lg
+            border
+            border-slate-700
+            px-3
+            py-2
+            text-xs
+            font-bold
+            text-slate-300
+            hover:border-indigo-500
+            hover:text-white
+        "
+    >
+        API Tester
+    </a>
 
+</div>
                 </div>
-
                 ${renderGameSelector(selectedGame)}            
                 <!-- Filtros -->
-
                 <div id="filtersArea">
-
                     ${renderCardSearch(
                         selectedGame,
                         filters
                     )}
-
                 </div>
-
-
                 <!-- Grid -->
-
                 <div
                     id="cards"
                     class="
@@ -260,160 +209,101 @@ function render() {
                     "
                 >
                 </div>
-
-
                 <!-- Paginação -->
-
                 <div
                     id="paginationArea"
                     class="mt-5"
                 >
                 </div>
-
-
             </main>
-
-
             <div id="modalRoot"></div>
-
         </div>
     `;
-
-
     bindEvents();
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Atualização parcial
 |--------------------------------------------------------------------------
 */
-
 function updatePageContent() {
-
     const game =
         getGame(selectedGame);
-
-
     const title =
         document.querySelector(
             "#gameTitle"
         );
-
-
     const totalElement =
         document.querySelector(
             "#gameTotal"
         );
-
-
     const filtersArea =
         document.querySelector(
             "#filtersArea"
         );
-
-
     const cardsArea =
         document.querySelector(
             "#cards"
         );
-
-
     const paginationArea =
         document.querySelector(
             "#paginationArea"
         );
-
-
     /*
      * Título
      */
-
     if (title) {
-
         title.textContent =
             game?.name ||
             selectedGame;
-
     }
-
-
     /*
      * Quantidade
      */
-
     if (totalElement) {
-
         totalElement.textContent =
             `${total.toLocaleString(
                 "pt-BR"
             )} resultados`;
-
     }
-
-
     /*
      * Filtros
      */
-
     if (filtersArea) {
-
         filtersArea.innerHTML =
             renderCardSearch(
                 selectedGame,
                 filters
             );
-
     }
-
-
     /*
      * Cartas
      */
-
     if (cardsArea) {
-
         cardsArea.innerHTML =
             renderCardGrid(cards);
-
     }
-
-
     /*
      * Paginação
      */
-
     if (paginationArea) {
-
         paginationArea.innerHTML =
             renderPagination();
-
     }
-
-
     /*
      * Como alteramos partes do DOM,
      * precisamos registrar novamente
      * os eventos dessas partes.
      */
-
     bindDynamicEvents();
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Paginação
 |--------------------------------------------------------------------------
 */
-
 function renderPagination() {
-
     return `
-
         <div
             class="
                 flex
@@ -422,7 +312,6 @@ function renderPagination() {
                 gap-3
             "
         >
-
             <button
                 id="previousPageBtn"
                 ${page <= 1
@@ -443,8 +332,6 @@ function renderPagination() {
             >
                 Anterior
             </button>
-
-
             <span
                 class="
                     text-xs
@@ -453,8 +340,6 @@ function renderPagination() {
             >
                 ${page} / ${totalPages}
             </span>
-
-
             <button
                 id="nextPageBtn"
                 ${page >= totalPages
@@ -475,34 +360,23 @@ function renderPagination() {
             >
                 Próxima
             </button>
-
         </div>
     `;
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Loading apenas no grid
 |--------------------------------------------------------------------------
 */
-
 function showGridLoading() {
-
     const cardsArea =
         document.querySelector(
             "#cards"
         );
-
-
     if (!cardsArea) {
         return;
     }
-
-
     cardsArea.innerHTML = `
-
         <div
             class="
                 col-span-full
@@ -516,50 +390,30 @@ function showGridLoading() {
         >
             Carregando cartas...
         </div>
-
     `;
-
-
     const paginationArea =
         document.querySelector(
             "#paginationArea"
         );
-
-
     if (paginationArea) {
-
         paginationArea.innerHTML = "";
-
     }
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Erro apenas no grid
 |--------------------------------------------------------------------------
 */
-
 function showGridError(error) {
-
     const cardsArea =
         document.querySelector(
             "#cards"
         );
-
-
     if (!cardsArea) {
-
         console.error(error);
-
         return;
-
     }
-
-
     cardsArea.innerHTML = `
-
         <div
             class="
                 col-span-full
@@ -571,7 +425,6 @@ function showGridError(error) {
                 gap-3
             "
         >
-
             <div
                 class="
                     text-sm
@@ -580,8 +433,6 @@ function showGridError(error) {
             >
                 ${error.message}
             </div>
-
-
             <button
                 id="retryBtn"
                 class="
@@ -596,53 +447,33 @@ function showGridError(error) {
             >
                 Tentar novamente
             </button>
-
         </div>
     `;
-
-
     document
         .querySelector("#retryBtn")
         ?.addEventListener(
             "click",
             loadCards
         );
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Eventos
 |--------------------------------------------------------------------------
 */
-
 function bindEvents() {
-
     bindGameEvents();
-
     bindDynamicEvents();
-
 }
-
-
 function bindDynamicEvents() {
-
     bindCardEvents();
-
     bindFilterEvents();
-
     bindPaginationEvents();
-
 }
-
-
 async function changeGame(newGame) {
-
     if (newGame === selectedGame) {
         return;
     }
-
     selectedGame = newGame;
     localStorage.setItem(
         "homura-selected-game",
@@ -655,31 +486,25 @@ async function changeGame(newGame) {
     filters = {};
     sort = "";
     order = "asc";
-
     /*
      * Atualiza visualmente a sidebar.
      */
     updateSidebar();
-
     /*
      * Atualiza título.
      */
     const game = getGame(selectedGame);
-
     const title = document.querySelector("#gameTitle");
-
     if (title) {
         title.textContent =
             game?.name ||
             selectedGame;
     }
-
     /*
      * Atualiza os filtros.
      */
     const filtersArea =
         document.querySelector("#filtersArea");
-
     if (filtersArea) {
         filtersArea.innerHTML =
             renderCardSearch(
@@ -687,59 +512,45 @@ async function changeGame(newGame) {
                 {}
             );
     }
-
     /*
      * Como recriamos os filtros,
      * registra novamente os eventos.
      */
     bindFilterEvents();
-
     /*
      * Atualiza o seletor mobile.
      */
     const mobileGameSelect =
         document.querySelector("#mobileGameSelect");
-
     if (mobileGameSelect) {
         mobileGameSelect.value = selectedGame;
     }
-
     /*
      * Apenas o grid fica em loading.
      */
     await loadCards();
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Troca de jogo
 |--------------------------------------------------------------------------
 */
-
 function bindGameEvents() {
-
     /*
      * Sidebar desktop
      */
     document
         .querySelectorAll("[data-game]")
         .forEach((button) => {
-
             button.addEventListener(
                 "click",
                 async () => {
-
                     await changeGame(
                         button.dataset.game
                     );
-
                 }
             );
-
         });
-
-
     /*
      * Seletor mobile
      */
@@ -747,186 +558,119 @@ function bindGameEvents() {
         document.querySelector(
             "#mobileGameSelect"
         );
-
     if (mobileGameSelect) {
-
         mobileGameSelect.addEventListener(
             "change",
             async () => {
-
                 await changeGame(
                     mobileGameSelect.value
                 );
-
             }
         );
-
     }
-
 }
-
-
-
 /*
 |--------------------------------------------------------------------------
 | Sidebar ativa
 |--------------------------------------------------------------------------
 */
-
 function updateSidebar() {
-
     document
         .querySelectorAll(
             "[data-game]"
         )
         .forEach((button) => {
-
             const active =
                 button.dataset.game ===
                 selectedGame;
-
-
             if (active) {
-
                 button.classList.add(
                     "bg-indigo-600",
                     "text-white"
                 );
-
                 button.classList.remove(
                     "text-slate-300"
                 );
-
             } else {
-
                 button.classList.remove(
                     "bg-indigo-600",
                     "text-white"
                 );
-
                 button.classList.add(
                     "text-slate-300"
                 );
-
             }
-
         });
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Clique nas cartas
 |--------------------------------------------------------------------------
 */
-
 function bindCardEvents() {
-
     document
         .querySelectorAll(
             "[data-card-index]"
         )
         .forEach((element) => {
-
             element.addEventListener(
                 "click",
                 () => {
-
                     const index =
                         Number(
                             element.dataset
                                 .cardIndex
                         );
-
-
                     const card =
                         cards[index];
-
-
                     if (!card) {
                         return;
                     }
-
-
                     openModal(card);
-
                 }
             );
-
         });
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Filtros
 |--------------------------------------------------------------------------
 */
-
 function bindFilterEvents() {
-
     const form =
         document.querySelector(
             "#filterForm"
         );
-
-
     form?.addEventListener(
         "submit",
         async (event) => {
-
             event.preventDefault();
-
-
             const formData =
                 new FormData(form);
-
-
             filters = {};
-
-
             for (
                 const [key, value]
                 of formData.entries()
             ) {
-
                 const cleanValue =
                     String(value).trim();
-
-
                 if (cleanValue) {
-
                     filters[key] =
                         cleanValue;
-
                 }
-
             }
-
-
             sort =
                 document.querySelector(
                     "#sortField"
                 )?.value || "";
-
-
             order =
                 document.querySelector(
                     "#sortOrder"
                 )?.value || "asc";
-
-
             page = 1;
-
-
             await loadCards();
-
         }
     );
-
-
     document
         .querySelector(
             "#clearFiltersBtn"
@@ -934,32 +678,20 @@ function bindFilterEvents() {
         ?.addEventListener(
             "click",
             async () => {
-
                 filters = {};
-
                 sort = "";
-
                 order = "asc";
-
                 page = 1;
-
-
                 await loadCards();
-
             }
         );
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Paginação
 |--------------------------------------------------------------------------
 */
-
 function bindPaginationEvents() {
-
     document
         .querySelector(
             "#previousPageBtn"
@@ -967,21 +699,13 @@ function bindPaginationEvents() {
         ?.addEventListener(
             "click",
             async () => {
-
                 if (page <= 1) {
                     return;
                 }
-
-
                 page--;
-
-
                 await loadCards();
-
             }
         );
-
-
     document
         .querySelector(
             "#nextPageBtn"
@@ -989,45 +713,32 @@ function bindPaginationEvents() {
         ?.addEventListener(
             "click",
             async () => {
-
                 if (
                     page >=
                     totalPages
                 ) {
                     return;
                 }
-
-
                 page++;
-
-
                 await loadCards();
-
             }
         );
-
 }
-
-
 /*
 |--------------------------------------------------------------------------
 | Modal
 |--------------------------------------------------------------------------
 */
-
 function openModal(card) {
     const root =
         document.querySelector(
             "#modalRoot"
         );
-
     if (!root) {
         return;
     }
-
     root.innerHTML =
         renderCardModal(card);
-
     document
         .querySelector(
             "#closeModal"
@@ -1036,7 +747,6 @@ function openModal(card) {
             "click",
             closeModal
         );
-
     document
         .querySelector(
             "#viewRawJson"
@@ -1050,7 +760,6 @@ function openModal(card) {
                         null,
                         2
                     );
-
                 const blob =
                     new Blob(
                         [json],
@@ -1058,17 +767,14 @@ function openModal(card) {
                             type: "application/json",
                         }
                     );
-
                 const url =
                     URL.createObjectURL(
                         blob
                     );
-
                 window.open(
                     url,
                     "_blank"
                 );
-
                 setTimeout(
                     () => {
                         URL.revokeObjectURL(
@@ -1079,7 +785,6 @@ function openModal(card) {
                 );
             }
         );
-
     document
         .querySelector("#modal")
         ?.addEventListener(
@@ -1094,20 +799,12 @@ function openModal(card) {
             }
         );
 }
-
-
 function closeModal() {
-
     const root =
         document.querySelector(
             "#modalRoot"
         );
-
-
     if (root) {
-
         root.innerHTML = "";
-
     }
-
 }
