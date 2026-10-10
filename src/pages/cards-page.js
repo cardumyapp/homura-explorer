@@ -164,14 +164,9 @@ function render() {
                     id="cards"
                     class="
                         grid
-                        grid-cols-2
+                        grid-cols-[repeat(auto-fill,minmax(94px,1fr))]
                         gap-1.5
-                        min-[420px]:grid-cols-3
-                        sm:grid-cols-4
-                        md:grid-cols-5
-                        lg:grid-cols-6
-                        xl:grid-cols-7
-                        2xl:grid-cols-9
+                        sm:grid-cols-[repeat(auto-fill,minmax(100px,1fr))]
                     "
                 >
                 </div>
