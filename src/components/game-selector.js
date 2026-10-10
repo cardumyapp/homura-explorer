@@ -2,7 +2,7 @@ import { games } from "../config/games.js";
 
 export function renderGameSelector(selectedGame) {
     return `
-        <div class="mb-4 md:hidden">
+        <div class="mb-2 lg:hidden">
             <label
                 for="mobileGameSelect"
                 class="mb-1 block text-xs text-slate-400"
