@@ -73,6 +73,8 @@ export function renderCardSearch(gameId, filters = {}) {
                 </div>
 
                 <div class="flex items-center gap-3">
+                    <button type="button" id="openSamplesBtn" class="rounded-lg border border-indigo-500/40 bg-indigo-500/10 px-3 py-2 text-xs font-semibold text-indigo-300 transition hover:bg-indigo-500/20">Amostras</button>
+
 
                     <button
                         type="button"
