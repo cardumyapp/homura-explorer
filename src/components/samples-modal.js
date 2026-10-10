@@ -26,10 +26,10 @@ function showSamplesModal() {
 
     root.innerHTML = `
         <div id="samplesOverlay" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-2 sm:p-4">
-            <section role="dialog" aria-modal="true" aria-label="Amostras de cartas" class="flex max-h-[95vh] w-full max-w-5xl flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-900 shadow-2xl sm:max-h-[90vh] sm:rounded-2xl">
-                <header class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 p-4">
+            <section role="dialog" aria-modal="true" aria-label="Amostras de cartas" class="flex max-h-[95vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl border border-slate-800 bg-slate-900 shadow-2xl sm:max-h-[90vh] sm:rounded-2xl">
+                <header class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 p-3">
                     <div>
-                        <h2 class="text-xl font-bold">Amostras</h2>
+                        <h2 class="text-lg font-bold">Amostras</h2>
                         <p class="text-xs text-slate-400">Cartas aleatórias de ${escapeHtml(currentGame)}</p>
                     </div>
                     <div class="flex items-center gap-2">
@@ -44,7 +44,7 @@ function showSamplesModal() {
                         <button id="closeSamples" aria-label="Fechar modal" class="rounded-lg bg-slate-800 px-3 py-2 text-lg hover:bg-slate-700">×</button>
                     </div>
                 </header>
-                <div class="min-h-0 overflow-y-auto p-4">
+                <div class="min-h-0 overflow-y-auto p-3">
                     <div class="mb-3 flex items-center justify-between gap-2">
                         <p id="samplesStatus" class="text-sm text-slate-400" aria-live="polite"></p>
                         <button id="samplesRaw" class="hidden rounded-lg border border-slate-700 px-3 py-1.5 text-xs hover:bg-slate-800">View raw</button>
