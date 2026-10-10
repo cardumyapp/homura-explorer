@@ -19,6 +19,7 @@ import {
 import {
     renderCardSearch,
 } from "../components/card-search.js";
+import { openSamplesModal } from "../components/samples-modal.js";
 let selectedGame =
     localStorage.getItem("homura-selected-game")
     || "one-piece";
@@ -430,6 +431,7 @@ function bindEvents() {
 function bindDynamicEvents() {
     bindCardEvents();
     bindFilterEvents();
+    document.querySelector("#openSamplesBtn")?.addEventListener("click", () => openSamplesModal(selectedGame));
     bindPaginationEvents();
 }
 async function changeGame(newGame) {
