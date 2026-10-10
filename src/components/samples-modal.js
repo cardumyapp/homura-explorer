@@ -54,6 +54,11 @@ function showSamplesModal() {
             </section>
         </div>`;
 
+    if (samples.length) {
+        root.querySelector("#samplesStatus").textContent = `${samples.length} carta(s) recebida(s)`;
+        root.querySelector("#samplesGrid").innerHTML = renderCardGrid(samples);
+        root.querySelector("#samplesRaw").classList.remove("hidden");
+    }
     root.querySelector("#closeSamples").addEventListener("click", closeSamplesModal);
     root.querySelector("#samplesOverlay").addEventListener("click", event => {
         if (event.target.id === "samplesOverlay") closeSamplesModal();
