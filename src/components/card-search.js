@@ -54,12 +54,12 @@ export function renderCardSearch(gameId, filters = {}) {
     return `
         <section
             class="
-                mb-4
+                mb-3
                 rounded-lg
                 border
                 border-slate-800
                 bg-slate-900
-                p-3
+                p-2.5
             "
         >
 
@@ -135,7 +135,7 @@ export function renderCardSearch(gameId, filters = {}) {
             <div
                 id="filtersContent"
                 class="
-                    mt-4
+                    mt-2
                     hidden
                     md:block
                 "
@@ -147,9 +147,11 @@ export function renderCardSearch(gameId, filters = {}) {
                         class="
                             grid
                             grid-cols-1
-                            gap-3
+                            gap-2
                             sm:grid-cols-2
-                            lg:grid-cols-6
+                            md:grid-cols-3
+                            xl:grid-cols-5
+                            2xl:grid-cols-6
                         "
                     >
 
@@ -159,7 +161,7 @@ export function renderCardSearch(gameId, filters = {}) {
 
                                 <label
                                     class="
-                                        mb-1
+                                        mb-0.5
                                         block
                                         text-xs
                                         text-slate-400
@@ -180,8 +182,8 @@ export function renderCardSearch(gameId, filters = {}) {
                                         border-slate-700
                                         bg-slate-950
                                         px-2
-                                        py-2
-                                        text-sm
+                                        py-1.5
+                                        text-xs
                                         outline-none
                                         focus:border-indigo-500
                                     "
@@ -196,10 +198,10 @@ export function renderCardSearch(gameId, filters = {}) {
                     <!-- Ações -->
                     <div
                         class="
-                            mt-4
+                            mt-2
                             grid
                             grid-cols-1
-                            gap-3
+                            gap-2
                             sm:flex
                             sm:flex-wrap
                         "
@@ -210,9 +212,9 @@ export function renderCardSearch(gameId, filters = {}) {
                             class="
                                 rounded-lg
                                 bg-indigo-600
-                                px-5
-                                py-2
-                                text-sm
+                                px-4
+                                py-1.5
+                                text-xs
                                 font-bold
                                 hover:bg-indigo-500
                             "
@@ -228,9 +230,9 @@ export function renderCardSearch(gameId, filters = {}) {
                                 border
                                 border-slate-700
                                 bg-slate-950
-                                px-3
-                                py-2
-                                text-sm
+                                px-2.5
+                                py-1.5
+                                text-xs
                                 sm:w-auto
                             "
                         >
@@ -259,9 +261,9 @@ export function renderCardSearch(gameId, filters = {}) {
                                 border
                                 border-slate-700
                                 bg-slate-950
-                                px-3
-                                py-2
-                                text-sm
+                                px-2.5
+                                py-1.5
+                                text-xs
                                 sm:w-auto
                             "
                         >
