@@ -110,14 +110,15 @@ function render() {
                 class="
                     min-w-0
                     flex-1
-                    p-4
-                    md:p-5
+                    p-2.5
+                    sm:p-3
+                    xl:p-4
                 "
             >
                 <!-- Cabeçalho -->
                 <div
                     class="
-                        mb-4
+                        mb-2
                         flex
                         items-center
                         justify-between
@@ -127,8 +128,9 @@ function render() {
                         <h2
                             id="gameTitle"
                             class="
-                                text-2xl
+                                text-lg
                                 font-bold
+                                sm:text-xl
                             "
                         >
                             ${
@@ -162,13 +164,14 @@ function render() {
                     id="cards"
                     class="
                         grid
-                        grid-cols-3
-                        gap-2
+                        grid-cols-2
+                        gap-1.5
+                        min-[420px]:grid-cols-3
                         sm:grid-cols-4
                         md:grid-cols-5
                         lg:grid-cols-6
-                        xl:grid-cols-8
-                        2xl:grid-cols-10
+                        xl:grid-cols-7
+                        2xl:grid-cols-9
                     "
                 >
                 </div>

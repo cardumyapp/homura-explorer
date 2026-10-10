@@ -37,7 +37,7 @@ export function renderCardModal(card) {
                     flex
                     max-h-[95vh]
                     w-full
-                    max-w-5xl
+                    max-w-4xl
                     flex-col
                     overflow-hidden
                     rounded-xl
@@ -47,7 +47,7 @@ export function renderCardModal(card) {
                     shadow-2xl
                     md:grid
                     md:max-h-[90vh]
-                    md:grid-cols-[minmax(280px,45%)_1fr]
+                    md:grid-cols-[minmax(230px,40%)_1fr]
                     md:rounded-2xl
                 "
             >
@@ -61,9 +61,9 @@ export function renderCardModal(card) {
                         items-center
                         justify-center
                         bg-black
-                        p-4
+                        p-3
                         md:h-full
-                        md:p-6
+                        md:p-4
                     "
                 >
                     ${
@@ -73,11 +73,11 @@ export function renderCardModal(card) {
                                     src="${escapeHtml(image)}"
                                     alt="${escapeHtml(card?.name || "")}"
                                     class="
-                                        max-h-[40vh]
+                                        max-h-[32vh]
                                         max-w-full
                                         rounded-xl
                                         object-contain
-                                        md:max-h-[80vh]
+                                        md:max-h-[74vh]
                                     "
                                 >
                             `
@@ -96,8 +96,8 @@ export function renderCardModal(card) {
                         min-h-0
                         flex-1
                         overflow-y-auto
-                        p-4
-                        sm:p-6
+                        p-3
+                        sm:p-4
                     "
                 >
 

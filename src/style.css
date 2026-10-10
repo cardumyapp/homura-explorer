@@ -15,3 +15,19 @@ body {
 .tester-input {
     @apply w-full rounded-lg border border-slate-700 bg-slate-950 px-3 py-2 text-sm outline-none focus:border-indigo-500;
 }
+/* Layout compacto e responsivo */
+* { box-sizing: border-box; }
+html, body, #app { min-width: 0; width: 100%; }
+@media (max-width: 1023px) {
+    #app > div { width: 100%; }
+}
+@media (max-height: 800px) and (min-width: 768px) {
+    #filtersContent { margin-top: 0.5rem; }
+    #filtersContent label { line-height: 1.15; }
+    #filtersContent input, #filtersContent select { min-height: 30px; }
+    #modal > div { max-height: 94dvh; }
+}
+@media (max-width: 767px) {
+    #filtersArea { min-width: 0; }
+    #modal > div { max-height: 96dvh; }
+}
