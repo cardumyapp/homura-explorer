@@ -5,18 +5,18 @@ export function renderGameSidebar(
 ) {
     return `
         <aside
-            class="hidden w-64 shrink-0 border-r border-slate-800 bg-slate-900 md:block"
+            class="hidden w-48 shrink-0 border-r border-slate-800 bg-slate-900 lg:block xl:w-52"
         >
 
             <div
-                class="border-b border-slate-800 p-5"
+                class="border-b border-slate-800 p-3"
             >
-                <h1 class="text-lg font-bold">
+                <h1 class="text-sm font-bold">
                     Homura Explorer
                 </h1>
             </div>
 
-            <nav class="p-3">
+            <nav class="sticky top-0 max-h-[calc(100dvh-48px)] overflow-y-auto p-2">
 
                 ${[...games]
     .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"))
@@ -24,13 +24,13 @@ export function renderGameSidebar(
         <button
             data-game="${game.id}"
             class="
-                mb-1
+                mb-0.5
                 w-full
                 rounded-lg
-                px-3
-                py-2
+                px-2.5
+                py-1.5
                 text-left
-                text-sm
+                text-xs
                 ${
                     game.id === selectedGame
                         ? "bg-indigo-600 text-white"
