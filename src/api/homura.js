@@ -113,3 +113,12 @@ export function getCardsBulk(game, ids) {
         }
     );
 }
+
+export function getRandomCards(game, sampleSize = 1) {
+    const size = Number(sampleSize);
+    if (!Number.isInteger(size) || size < 1 || size > 50) {
+        throw new Error("A quantidade deve estar entre 1 e 50.");
+    }
+    const query = size === 1 ? "" : `?sample_size=${size}`;
+    return request(`/api/${encodeURIComponent(game)}/cards/random${query}`);
+}
