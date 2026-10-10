@@ -146,45 +146,7 @@ function render() {
                             Carregando...
                         </p>
                     </div>
-                    <div class="flex gap-2">
 
-    <a
-        href="/random-v2"
-        class="
-            rounded-lg
-            border
-            border-slate-700
-            px-3
-            py-2
-            text-xs
-            font-bold
-            text-slate-300
-            hover:border-indigo-500
-            hover:text-white
-        "
-    >
-        Random V2
-    </a>
-
-    <a
-        href="/api-tester"
-        class="
-            rounded-lg
-            border
-            border-slate-700
-            px-3
-            py-2
-            text-xs
-            font-bold
-            text-slate-300
-            hover:border-indigo-500
-            hover:text-white
-        "
-    >
-        API Tester
-    </a>
-
-</div>
                 </div>
                 ${renderGameSelector(selectedGame)}            
                 <!-- Filtros -->
