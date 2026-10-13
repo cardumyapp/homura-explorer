@@ -91,28 +91,7 @@ async function loadCards() {
 function render() {
     const game =
         getGame(selectedGame);
-    document.querySelector("#app")
-        .innerHTML = `
-        <div
-            class="
-                flex
-                min-h-screen
-                bg-slate-950
-                text-white
-            "
-        >
-            ${renderGameSidebar(
-                selectedGame
-            )}
-            <main
-                class="
-                    min-w-0
-                    flex-1
-                    p-2.5
-                    sm:p-3
-                    xl:p-4
-                "
-            >
+    document.querySelector("#app").innerHTML = renderAppLayout(`
                 <a href="/" class="mb-2 inline-flex items-center gap-1 text-xs text-indigo-300 hover:text-white">← Início</a>
                 <!-- Cabeçalho -->
                 <div
