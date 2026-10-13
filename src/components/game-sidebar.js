@@ -17,13 +17,13 @@ export function renderGameSidebar(
             </div>
 
             <nav class="sticky top-0 max-h-[calc(100dvh-48px)] overflow-y-auto p-2">
-                <a href="/" class="mb-2 block rounded-lg border border-slate-700 px-2.5 py-1.5 text-xs font-semibold text-indigo-300 hover:bg-slate-800">Início / Visão geral</a>
+                <a href="/" class="mb-2 block rounded-lg px-2.5 py-1.5 text-xs font-semibold ${selectedGame === null ? "bg-indigo-600 text-white" : "text-indigo-300 hover:bg-slate-800"}">Início</a>
 
                 ${[...games]
     .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"))
     .map((game) => `
-        <button
-            data-game="${game.id}"
+        <${selectedGame === null ? "a" : "button"}
+            ${selectedGame === null ? `href="/cards?game=${encodeURIComponent(game.id)}"` : `data-game="${game.id}"`}
             class="
                 mb-0.5
                 w-full
@@ -40,7 +40,7 @@ export function renderGameSidebar(
             "
         >
             ${game.name}
-        </button>
+        </${selectedGame === null ? "a" : "button"}>
     `)
     .join("")}
 
