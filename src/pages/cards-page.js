@@ -6,9 +6,6 @@ import {
 } from "../config/games.js";
 import { renderAppLayout, bindAppLayoutNavigation } from "../components/app-layout.js";
 import {
-    renderGameSelector,
-} from "../components/game-selector.js";
-import {
     renderCardGrid,
 } from "../components/card-grid.js";
 import {
@@ -129,7 +126,6 @@ function render() {
                     </div>
 
                 </div>
-                ${renderGameSelector(selectedGame)}            
                 <!-- Filtros -->
                 <div id="filtersArea">
                     ${renderCardSearch(
