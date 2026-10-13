@@ -1,5 +1,6 @@
 import { getApiInfo } from "../api/homura.js";
 import { escapeHtml } from "../utils/helpers.js";
+import { renderAppLayout, bindAppLayoutNavigation } from "../components/app-layout.js";
 
 const formatNumber = value => Number(value || 0).toLocaleString("pt-BR");
 function formatDate(value) {
@@ -90,18 +91,17 @@ function renderGames(rows) {
 }
 export async function renderHomePage() {
     const app = document.querySelector("#app");
-    app.innerHTML = `<main class="min-h-screen bg-slate-950 p-3 text-white sm:p-4">
-        <div class="mx-auto max-w-[1700px]">
-            <header class="mb-4 flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-3">
-                <div><h1 class="text-xl font-bold">Homura Explorer</h1><p class="text-xs text-slate-400">Visão geral do catálogo de TCGs</p></div>
-                <div class="flex items-center gap-2">
-                    <a href="/cards" class="rounded-lg border border-slate-700 px-3 py-2 text-xs font-semibold hover:border-indigo-500">Explorar cartas</a>
-                    <button id="reloadOverview" type="button" class="rounded-lg bg-indigo-600 px-3 py-2 text-xs font-semibold hover:bg-indigo-500">Atualizar</button>
-                </div>
-            </header>
-            <div id="overviewContent" role="status" aria-live="polite" class="py-8 text-center text-sm text-slate-400">Carregando visão geral...</div>
-        </div>
-    </main>`;
+    app.innerHTML = renderAppLayout(`
+        <header class="mb-3 flex flex-wrap items-center justify-between gap-2">
+            <div><h1 class="text-xl font-bold">Visão geral</h1><p class="text-xs text-slate-400">Indicadores do catálogo</p></div>
+            <div class="flex gap-2">
+                <a href="/cards" class="rounded-lg border border-slate-700 px-3 py-2 text-xs hover:border-indigo-500">Cartas</a>
+                <button id="reloadOverview" class="rounded-lg bg-indigo-600 px-3 py-2 text-xs font-semibold hover:bg-indigo-500">Atualizar</button>
+            </div>
+        </header>
+        <div id="overviewContent" aria-live="polite" class="text-sm text-slate-400">Carregando visão geral...</div>
+    `, null);
+    bindAppLayoutNavigation();
     let loadId = 0;
     async function load() {
         const id = ++loadId;
