@@ -31,3 +31,8 @@ html, body, #app { min-width: 0; width: 100%; }
     #filtersArea { min-width: 0; }
     #modal > div { max-height: 96dvh; }
 }
+
+/* JSON destacado: consistente em desktop e notebook */
+#modal pre:has(code.language-json) { font-size: 10px; line-height: 1.4; tab-size: 2; }
+#modal code.language-json.hljs { display: block; padding: 0; background: transparent; font-size: inherit; line-height: inherit; white-space: pre; }
+@media (min-width: 640px) { #modal pre:has(code.language-json) { font-size: 11px; } }
