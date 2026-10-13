@@ -1,3 +1,9 @@
+import hljs from "highlight.js/lib/core";
+import json from "highlight.js/lib/languages/json";
+import "highlight.js/styles/atom-one-dark.css";
+
+hljs.registerLanguage("json", json);
+
 import { getImage, escapeHtml } from "../utils/helpers.js";
 
 function detail(label, value) {
@@ -206,15 +212,13 @@ export function renderCardModal(card) {
                                 border-slate-800
                                 bg-black
                                 p-3
-                                text-[11px]
-                                leading-relaxed
+                                text-[10px]
+                                leading-[1.4]
                                 text-slate-300
-                                sm:p-4
-                                sm:text-xs
+                                sm:p-3
+                                sm:text-[11px]
                             "
-                        ><code>${escapeHtml(
-                            JSON.stringify(card, null, 2)
-                        )}</code></pre>
+                        ><code class="hljs language-json">${hljs.highlight(JSON.stringify(card, null, 2), { language: "json" }).value}</code></pre>
 
                     </div>
 
