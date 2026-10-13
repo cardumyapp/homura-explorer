@@ -21,7 +21,7 @@ import {
 } from "../components/card-search.js";
 import { openSamplesModal } from "../components/samples-modal.js";
 let selectedGame =
-    localStorage.getItem("homura-selected-game")
+    new URLSearchParams(window.location.search).get("game") || localStorage.getItem("homura-selected-game")
     || "one-piece";
 let cards = [];
 let page = 1;
@@ -115,6 +115,7 @@ function render() {
                     xl:p-4
                 "
             >
+                <a href="/" class="mb-2 inline-flex items-center gap-1 text-xs text-indigo-300 hover:text-white">← Início</a>
                 <!-- Cabeçalho -->
                 <div
                     class="
