@@ -4,9 +4,7 @@ import {
 import {
     getGame,
 } from "../config/games.js";
-import {
-    renderGameSidebar,
-} from "../components/game-sidebar.js";
+import { renderAppLayout } from "../components/app-layout.js";
 import {
     renderGameSelector,
 } from "../components/game-selector.js";
@@ -177,10 +175,8 @@ function render() {
                     class="mt-5"
                 >
                 </div>
-            </main>
             <div id="modalRoot"></div>
-        </div>
-    `;
+    `, selectedGame);
     bindEvents();
 }
 /*
