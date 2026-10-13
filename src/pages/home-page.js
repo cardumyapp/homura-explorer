@@ -11,13 +11,13 @@ function formatDate(value) {
         dateStyle: "short", timeStyle: "short", timeZone: "America/Sao_Paulo"
     });
 }
-function metric(label, value, note = "") {
+function metric(label, value, accent = "") {
     return `<div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
-        <p class="text-xs text-slate-400">${label}</p>
-        <strong class="mt-1 block text-xl font-bold tabular-nums">${formatNumber(value)}</strong>
-        ${note ? `<p class="mt-1 text-xs text-slate-500">${note}</p>` : ""}
+        <p class="text-[11px] text-slate-400">${label}</p>
+        <strong class="mt-1 block text-xl font-bold tabular-nums ${accent}">${formatNumber(value)}</strong>
     </div>`;
 }
+
 function renderOverview(rows) {
     const totals = rows.reduce((sum, row) => {
         sum.cards += Number(row.count || 0);
@@ -26,67 +26,81 @@ function renderOverview(rows) {
         sum.missing += Number(row.variants_without_tcgplayer_id || 0);
         return sum;
     }, { cards: 0, sets: 0, variants: 0, missing: 0 });
-    const coverage = totals.variants ? 100 * (totals.variants - totals.missing) / totals.variants : 0;
+    const coverage = totals.variants ? (totals.variants - totals.missing) / totals.variants * 100 : 0;
+
     return `
-        <div class="mb-3 grid grid-cols-2 gap-2 lg:grid-cols-3 2xl:grid-cols-6">
+        <div class="mb-3 grid grid-cols-2 gap-2 md:grid-cols-3 2xl:grid-cols-6">
             ${metric("Jogos", rows.length)}
             ${metric("Cartas", totals.cards)}
             ${metric("Sets", totals.sets)}
             ${metric("Variantes", totals.variants)}
-            ${metric("Sem TCGplayer ID", totals.missing)}
+            ${metric("IDs ausentes", totals.missing, "text-amber-400")}
             <div class="rounded-lg border border-slate-800 bg-slate-900 p-3">
-                <p class="text-xs text-slate-400">Cobertura de IDs</p>
-                <strong class="mt-1 block text-xl font-bold tabular-nums">${coverage.toFixed(1).replace(".", ",")}%</strong>
-                <p class="mt-1 text-xs text-slate-500">Variantes com ID preenchido</p>
+                <p class="text-[11px] text-slate-400">Cobertura IDs</p>
+                <strong class="mt-1 block text-xl font-bold">${coverage.toFixed(1).replace(".", ",")}%</strong>
+                <div class="mt-2 h-1 overflow-hidden rounded-full bg-slate-800">
+                    <div class="h-full rounded-full bg-indigo-500" style="width: ${Math.max(0, Math.min(100, coverage))}%"></div>
+                </div>
             </div>
         </div>
-        <div class="mb-3 flex flex-wrap items-center justify-between gap-2">
-            <h2 class="text-base font-semibold">Jogos cadastrados</h2>
-            <div class="flex items-center gap-2">
-                <label for="overviewSort" class="text-xs text-slate-400">Ordenar por</label>
-                <select id="overviewSort" class="rounded-lg border border-slate-700 bg-slate-900 px-2 py-1.5 text-xs">
-                    <option value="cards">Mais cartas</option>
-                    <option value="name">Nome</option>
-                    <option value="missing">Mais IDs ausentes</option>
-                </select>
+        <section class="overflow-hidden rounded-xl border border-slate-800 bg-slate-900">
+            <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-800 p-3">
+                <h2 class="text-sm font-semibold">Catálogo por jogo</h2>
+                <div class="flex items-center gap-2">
+                    <input id="overviewSearch" type="search" aria-label="Buscar jogo" placeholder="Buscar jogo..."
+                        class="w-32 rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-xs outline-none focus:border-indigo-500 sm:w-44">
+                    <select id="overviewSort" aria-label="Ordenar jogos"
+                        class="rounded-lg border border-slate-700 bg-slate-950 px-2.5 py-1.5 text-xs">
+                        <option value="cards">Mais cartas</option>
+                        <option value="name">Nome</option>
+                        <option value="missing">IDs ausentes</option>
+                    </select>
+                </div>
             </div>
-        </div>
-        <div id="overviewGames" class="grid grid-cols-1 gap-2 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"></div>
-    `;
+            <div class="overflow-x-auto">
+                <table class="w-full min-w-[760px] text-left text-xs">
+                    <thead class="bg-slate-950/80 text-[11px] text-slate-400">
+                        <tr>
+                            <th class="px-3 py-2 font-medium">Jogo</th>
+                            <th class="px-2 py-2 text-right font-medium">Cartas</th>
+                            <th class="px-2 py-2 text-right font-medium">Sets</th>
+                            <th class="px-2 py-2 text-right font-medium">Variantes</th>
+                            <th class="px-2 py-2 text-right font-medium">IDs ausentes</th>
+                            <th class="w-36 px-2 py-2 font-medium">Cobertura</th>
+                            <th class="px-2 py-2 font-medium">Preços</th>
+                            <th class="px-3 py-2"></th>
+                        </tr>
+                    </thead>
+                    <tbody id="overviewGames" class="divide-y divide-slate-800"></tbody>
+                </table>
+            </div>
+        </section>`;
 }
+
 function renderGames(rows) {
+    if (!rows.length) return '<tr><td colspan="8" class="p-6 text-center text-slate-400">Nenhum jogo encontrado.</td></tr>';
     return rows.map(row => {
-        const cards = Number(row.count || 0);
-        const withVariants = Number(row.cards_with_variants || 0);
         const variants = Number(row.variants_count || 0);
         const missing = Number(row.variants_without_tcgplayer_id || 0);
-        const pct = variants ? ((variants - missing) / variants * 100) : 0;
-        const cardPct = cards ? withVariants / cards * 100 : 0;
-        const slug = encodeURIComponent(row.slug || "");
-        return `<article class="min-w-0 rounded-lg border border-slate-800 bg-slate-900 p-3 transition hover:border-indigo-500/60">
-            <div class="mb-3 flex items-start justify-between gap-2">
-                <div class="min-w-0">
-                    <h3 class="truncate text-sm font-semibold" title="${escapeHtml(row.game_name)}">${escapeHtml(row.game_name)}</h3>
-                    <p class="mt-0.5 truncate text-[11px] text-slate-500">${escapeHtml(row.collection)}</p>
+        const coverage = variants ? Math.max(0, (variants - missing) / variants * 100) : 0;
+        const name = escapeHtml(row.game_name || row.slug || "Jogo");
+        return `<tr class="hover:bg-slate-800/60">
+            <td class="px-3 py-2 font-medium" title="${escapeHtml(row.collection || "")}">${name}</td>
+            <td class="px-2 py-2 text-right tabular-nums">${formatNumber(row.count)}</td>
+            <td class="px-2 py-2 text-right tabular-nums">${formatNumber(row.sets_count)}</td>
+            <td class="px-2 py-2 text-right tabular-nums">${formatNumber(variants)}</td>
+            <td class="px-2 py-2 text-right tabular-nums ${missing ? "text-amber-400" : "text-emerald-400"}">${formatNumber(missing)}</td>
+            <td class="px-2 py-2">
+                <div class="flex items-center gap-2">
+                    <div class="h-1.5 min-w-0 flex-1 overflow-hidden rounded-full bg-slate-800">
+                        <div class="h-full rounded-full bg-indigo-500" style="width: ${Math.min(100, coverage)}%"></div>
+                    </div>
+                    <span class="w-11 text-right text-[11px] tabular-nums">${coverage.toFixed(1).replace(".", ",")}%</span>
                 </div>
-                <a href="/cards?game=${slug}" class="shrink-0 rounded-md bg-indigo-600 px-2.5 py-1.5 text-xs font-semibold hover:bg-indigo-500">Cartas →</a>
-            </div>
-            <dl class="grid grid-cols-2 gap-x-3 gap-y-2">
-                <div><dt class="text-[11px] text-slate-400">Cartas</dt><dd class="text-base font-semibold tabular-nums">${formatNumber(cards)}</dd></div>
-                <div><dt class="text-[11px] text-slate-400">Sets</dt><dd class="text-base font-semibold tabular-nums">${formatNumber(row.sets_count)}</dd></div>
-                <div><dt class="text-[11px] text-slate-400">Variantes</dt><dd class="text-base font-semibold tabular-nums">${formatNumber(variants)}</dd></div>
-                <div><dt class="text-[11px] text-slate-400">Sem TCGplayer ID</dt><dd class="text-base font-semibold tabular-nums ${missing ? "text-amber-400" : "text-emerald-400"}">${formatNumber(missing)}</dd></div>
-            </dl>
-            <div class="mt-3">
-                <div class="mb-1 flex justify-between gap-2 text-[11px] text-slate-400"><span>Cobertura de IDs</span><span>${pct.toFixed(1).replace(".", ",")}%</span></div>
-                <div class="h-1.5 overflow-hidden rounded-full bg-slate-800"><div class="h-full rounded-full bg-indigo-500" style="width:${Math.max(0, Math.min(100, pct))}%"></div></div>
-                <p class="mt-1 text-[11px] text-slate-500">Cartas com variantes: ${formatNumber(withVariants)} (${cardPct.toFixed(1).replace(".", ",")}%)</p>
-            </div>
-            <div class="mt-3 border-t border-slate-800 pt-2 text-[11px] text-slate-400">
-                <p>Cartas: ${formatDate(row.last_cards_update)}</p>
-                <p class="mt-1">Preços: ${formatDate(row.last_prices_update)}</p>
-            </div>
-        </article>`;
+            </td>
+            <td class="whitespace-nowrap px-2 py-2 text-[11px] text-slate-400" title="Atualização das cartas: ${escapeHtml(formatDate(row.last_cards_update))}">${row.last_prices_update ? escapeHtml(formatDate(row.last_prices_update)) : "—"}</td>
+            <td class="whitespace-nowrap px-3 py-2 text-right"><a href="/cards?game=${encodeURIComponent(row.slug || "")}" class="text-indigo-300 hover:text-white">Ver cartas →</a></td>
+        </tr>`;
     }).join("");
 }
 export async function renderHomePage() {
@@ -120,14 +134,17 @@ export async function renderHomePage() {
             host.innerHTML = renderOverview(rows);
             const grid = host.querySelector("#overviewGames");
             const sort = host.querySelector("#overviewSort");
+            const search = host.querySelector("#overviewSearch");
             function updateGrid() {
-                const list = [...rows];
+                const query = search.value.trim().toLocaleLowerCase("pt-BR");
+                const list = rows.filter(row => (row.game_name || row.slug || "").toLocaleLowerCase("pt-BR").includes(query));
                 if (sort.value === "name") list.sort((a,b) => (a.game_name || "").localeCompare(b.game_name || "", "pt-BR"));
                 else if (sort.value === "missing") list.sort((a,b) => Number(b.variants_without_tcgplayer_id || 0) - Number(a.variants_without_tcgplayer_id || 0));
                 else list.sort((a,b) => Number(b.count || 0) - Number(a.count || 0));
                 grid.innerHTML = renderGames(list);
             }
             sort.addEventListener("change", updateGrid);
+            search.addEventListener("input", updateGrid);
             updateGrid();
         } catch(error) {
             if (id !== loadId) return;
