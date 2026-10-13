@@ -9,7 +9,7 @@ function buildUrl(path) {
     // passa pela Vercel Function para proteger o token
     const cleanPath = path.replace(/^\/+/, "");
 
-    return `/api/homura?path=${encodeURIComponent(cleanPath)}`;
+    return `/api/homura?path=${encodeURIComponent(cleanPath || "/")}`;
 }
 
 

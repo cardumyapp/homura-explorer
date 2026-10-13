@@ -1,10 +1,15 @@
 import "./style.css";
+import { renderHomePage } from "./pages/home-page.js";
 
 import {
     renderCardsPage,
 } from "./pages/cards-page.js";
 
-renderCardsPage();
+if (window.location.pathname === "/cards") {
+    renderCardsPage();
+} else {
+    renderHomePage();
+}
 
 if ("serviceWorker" in navigator) {
     window.addEventListener("load", () => {
