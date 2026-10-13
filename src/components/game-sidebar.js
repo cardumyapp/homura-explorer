@@ -17,6 +17,7 @@ export function renderGameSidebar(
             </div>
 
             <nav class="sticky top-0 max-h-[calc(100dvh-48px)] overflow-y-auto p-2">
+                <a href="/" class="mb-2 block rounded-lg border border-slate-700 px-2.5 py-1.5 text-xs font-semibold text-indigo-300 hover:bg-slate-800">Início / Visão geral</a>
 
                 ${[...games]
     .sort((a, b) => a.name.localeCompare(b.name, "pt-BR"))
