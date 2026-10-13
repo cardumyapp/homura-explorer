@@ -4,12 +4,7 @@ import {
 import {
     getGame,
 } from "../config/games.js";
-import {
-    renderGameSidebar,
-} from "../components/game-sidebar.js";
-import {
-    renderGameSelector,
-} from "../components/game-selector.js";
+import { renderAppLayout, bindAppLayoutNavigation } from "../components/app-layout.js";
 import {
     renderCardGrid,
 } from "../components/card-grid.js";
@@ -93,28 +88,7 @@ async function loadCards() {
 function render() {
     const game =
         getGame(selectedGame);
-    document.querySelector("#app")
-        .innerHTML = `
-        <div
-            class="
-                flex
-                min-h-screen
-                bg-slate-950
-                text-white
-            "
-        >
-            ${renderGameSidebar(
-                selectedGame
-            )}
-            <main
-                class="
-                    min-w-0
-                    flex-1
-                    p-2.5
-                    sm:p-3
-                    xl:p-4
-                "
-            >
+    document.querySelector("#app").innerHTML = renderAppLayout(`
                 <a href="/" class="mb-2 inline-flex items-center gap-1 text-xs text-indigo-300 hover:text-white">← Início</a>
                 <!-- Cabeçalho -->
                 <div
@@ -152,7 +126,6 @@ function render() {
                     </div>
 
                 </div>
-                ${renderGameSelector(selectedGame)}            
                 <!-- Filtros -->
                 <div id="filtersArea">
                     ${renderCardSearch(
@@ -177,10 +150,9 @@ function render() {
                     class="mt-5"
                 >
                 </div>
-            </main>
             <div id="modalRoot"></div>
-        </div>
-    `;
+    `, selectedGame);
+    bindAppLayoutNavigation();
     bindEvents();
 }
 /*
