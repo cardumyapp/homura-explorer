@@ -4,7 +4,7 @@ import {
 import {
     getGame,
 } from "../config/games.js";
-import { renderAppLayout } from "../components/app-layout.js";
+import { renderAppLayout, bindAppLayoutNavigation } from "../components/app-layout.js";
 import {
     renderGameSelector,
 } from "../components/game-selector.js";
@@ -177,6 +177,7 @@ function render() {
                 </div>
             <div id="modalRoot"></div>
     `, selectedGame);
+    bindAppLayoutNavigation();
     bindEvents();
 }
 /*
